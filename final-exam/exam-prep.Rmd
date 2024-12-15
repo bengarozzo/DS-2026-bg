@@ -1,0 +1,782 @@
+---
+title: "DS 2026 Final Exam Prep Questions"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+
+
+# NAME: **Please add your name here**
+
+**NOTE:** The `.rmd` version of the file is available here:
+[(link)](https://tgstewart.cloud/final-exam-prep.rmd)
+
+## Instructions
+
+Please prepare reponses/solutions for the following questions. On the
+day of the exam, you will be given a new set of questions. You will use
+the solutions you've prepared for this exam during the exam.
+
+During the exam, you will also be permitted to access the internet for
+publicly available content. You will not be allowed to communicate with
+anyone via the internet or any other means during the exam. This
+includes, but is not limited to:
+
+-   No messaging, emailing, or using social media to contact others.
+-   No posting questions or seeking answers on forums, chat rooms, chat
+    bots (including large language models like ChatGPT), or any
+    collaborative platforms.
+-   No sharing or discussing exam content with peers through any online
+    or electronic medium.
+
+You may **NOT** discuss any aspect of the exam or prep questions with
+anyone other than the instructor or TA. You may **NOT** share code or
+documents.
+
+## Submission instructions
+
+1.  Within your course repo, create a folder called `final-exam`
+2.  Within the folder, create the script file `exam-prep.rmd` with your
+    solutions. Create a rendered report in `.pdf` output.
+3.  Add, commit, and push to your repo on github.com.
+
+## Questions
+
+Exam questions are organized into sections corresponding to the learning
+outcomes of the course.
+
+> compare and contrast different definitions of probability,
+> illustrating differences with simple examples
+
+Classical definition: Probability is defined based on equally likely
+outcomes. Formula would be P(A) = Number of favorable outcomes / Total
+number of outcomes. For example, the probability of rolling a 6 on a
+fair die is 1/6.
+
+Frequentist definition: Probability as the long-run frequency of events
+(e.g., flipping a coin many times). We find probability by repeating
+many many trials and reporting the results. For example, the probability
+of flipping a coin and getting heads is 0.5 which can be observed by
+flipping a coin thousands of times.
+
+Bayesian definition: Probability as a measure of belief, updated with
+new evidence (conditional probability). Probability is based on the
+knowledge we have access to, constantly changing. If we believe there is
+a 5% chance someone has a disease but then learn they smoke, we may be
+able to update our beliefs to 15%.
+
+See questions from previous exams
+
+> express the rules of probability verbally, mathematically, and
+> computationally
+
+Addition Rule: For mutually exclusive events, P(A ∪ B)=P(A)+P(B). This
+means that if we have two events that can occur separately, the
+probability that they occur is the sum of the probabilities of each
+event. If P(A) = 0.3 and P(B) = 0.4, then P(A ∪ B) = 0.7.
+
+Multiplication Rule: For independent events, P(A∩B)=P(A)×P(B). If two
+events are independent, the probability that they both occur is the
+product of the probabilities of each event. If P(A) = 0.3 and P(B) =
+0.4, then P(A ∩ B) = 0.12.
+
+If events are NOT independent, then P(A∩B)=P(A)×P(B\|A). The probability
+of both events occurring is the probability of the first event times the
+probability of the second event given the first event has occurred.
+
+Complement Rule: P(not A)=1-P(A) The probability of an event not
+happening is 1 minus the probability that it does happen. If P(A) = 0.3,
+then P(not A) = 0.7.
+
+> illustrate the rules of probability with examples
+
+Addition Rule Example: Suppose we have a weather forecast. If there is a
+20% chance that it rains and a 30% chance that it snows(assuming them to
+be mutually exclusive) the probability that it rains or snows is 0.2 +
+0.3 = 0.5.
+
+Multiplication Rule Example: Suppose we have a deck of cards. What is
+the probability of drawing a red card and then drawing a club if we
+sample with replacement? P(red) = 0.5. P(clubs) = 0.25. P(red then
+clubs) = 0.5 \* 0.25 = 0.125.
+
+Complement rule example: Suppose there is a 30% chance of rain on a
+given day. What is the probability that it does not rain? P(rain) = 0.3.
+P(not rain) = 1-0.3 = 0.7.
+
+> using long-run proportion definition of probability, derive the
+> univariate rules of probability
+
+Long-run proportion prob def: With repeated trials and samples, long run
+proportions model data that is closer and closer to population
+statistics. As the number of trials increases, the proportion of
+successes will approach the true probability of success.
+
+-Non-negative: Probability of an event is always greater than or equal
+to 0
+
+-Total probability: Probability of all possible outcomes is equal to 1
+
+-Addition rule: Probability of the union of two events is equal to the
+sum of the probabilities of each event
+
+-Complement rule: Probability of an event not happening is equal to 1
+minus the probability that it does happen
+
+> organize/express bivariate random variables in cross tables
+
+```{r}
+data <- data.frame(
+Type = c("Spam", "Not Spam", "Spam", "Spam", "Not Spam", "Not Spam"),
+Folder = c("Junk", "Inbox", "Junk", "Inbox", "Inbox", "Junk")
+)
+cross_table <- table(data$Type, data$Folder)
+cross_table
+```
+
+From the cross table above, our two variables are email organization and
+spam status, represented by the rows and columns. From these rows and
+columns we can calculate joint, conditional, and marginal probabilities.
+
+> define joint, conditional, and marginal probabilities
+
+```{r}
+joint_prob <- prop.table(cross_table)
+joint_prob
+```
+
+Joint probability is the probability of two events occurring together.
+In the example above, the joint probability of an email being spam and
+in the junk folder is 0.1667.
+
+```{r}
+row_marginals <- margin.table(cross_table, 1) / sum(cross_table)
+row_marginals
+```
+
+Marginal probability is the probability of a single event occurring. In
+the example above, the marginal probability of an email being spam is
+0.5.
+
+```{r}
+col_marginals <- margin.table(cross_table, 2) / sum(cross_table)
+col_marginals
+```
+
+Marginal probability is the probability of a single event occurring. In
+the example above, the marginal probability of an email being in the
+junk folder is 0.5.
+
+```{r}
+# P(Type | Folder)
+cond_prob <- prop.table(cross_table, margin = 2)
+cond_prob
+```
+
+Conditional probability is the probability of an event occurring given
+that another event has occurred. In the example above, the conditional
+probability of an email being in the junk folder given that it is spam
+is 0.3333.
+
+This shows us the probability of an event given another one is true. For
+example, the probability of an email being spam given that it is in the
+junk folder is 0.5.
+
+> identify joint, conditional, and marginal probabilities in cross
+> tables
+
+1.  Joint probabilities: Probability of two events happening at the same
+    time. Represents the likelihood of both events A and B occurring
+    together. For independent events, calculated as P(A)\*P(B)
+
+2.  Conditional probabilities: Refers to the outcome of a random
+    variable supposing the outcome of a second(or more) random variable
+    is known. Probability of the random variable is influenced by the
+    known variable
+
+3.  Marginal probabilities: Found on the margins, totals for
+    rows/columns. Describes only a single event.Marginal row probability
+    and marginal column probability sums to one within respective
+    row/column.
+
+This is the command to calculate the joint, conditional, and marginal
+probabilities in a cross table:
+
+d1 \<- readRDS(url("<https://tgstewart.cloud/spam-data.RDS>"))
+descr:::CrossTable(d1$Type, d1$Folder)
+
+```{r}
+d1 <- readRDS(url("https://tgstewart.cloud/spam-data.RDS"))
+library(gmodels)
+CrossTable(d1$Type, d1$Folder, prop.chisq = FALSE)
+```
+
+Joint: The joint probability can be observed as the intersection between
+two variables, the cell probability. For example, the joint probability
+of Inbox and Not Spam is 0.759(7589/10000).
+
+Conditional: The conditional probability can be observed in the table as
+the first two probabilities under the count of observation. For example,
+the conditional probability that an email is not spam given that it is
+from the inbox folder is 0.947(7589/8011).
+
+Marginal: From the cross table above, the marginal population can be
+observed on the margins. The marginal row probability for Not Spam is
+0.801 and the marginal row probability for Spam is 0.199. The marginal
+column probability for Inbox is 0.779 and the marginal column
+probability for Spam is 0.221.
+
+> identify when a research question calls for a joint, conditional, or
+> marginal probability
+
+Joint probability: What is the probability of cancer and woman? P(Cancer
+and Woman)
+
+Conditional probability: What is the probability of cancer in a
+population GIVEN that an individual is a woman? P(Cancer\|Woman)
+
+Marginal probability: What is the probability of cancer in the
+population? P(Cancer). What is the probability of being a woman in the
+population? P(Woman)
+
+> describe the connection between conditional probabilities and
+> prediction
+
+Conditional probabilities represent updated beliefs that can be derived
+when we have a wider knowledge base. The more we know, the more
+confident we can be in our predictions. Conditional probabilities are
+used to predict the likelihood of an event given that another event has
+already occurred. For example, the probability of a student passing a
+test given that they studied is higher than the probability of a student
+passing a test given that they did not study. We feel confident that we
+know how a student will perform on a test if we know how much they
+studied.
+
+To put it simply - conditional probabilities help us make better
+predictions by taking into account additional information that we have.
+
+> derive Bayes rule from cross tables
+
+Bayes rule: P(A\|B) = P(B\|A)P(A)/P(B). In words, the probability of
+event A given event B is equal to the probability of event B given event
+A times the probability of event A divided by the probability of event
+B.
+
+Important rules:
+
+-Probabilities of the same type must sum to 1
+
+-All cell probabilities must sum to 1
+
+-Within a column, conditional column probability must sum to 1
+
+-Within a row, conditional row probability must sum to 1
+
+-Marginal row and marginal column also must sum to 1
+
+-Marginal probability is just sums of the cells
+
+This can be derived from a cross table. Take the table above. Suppose
+event A is the probability of being worse, event B is the probability of
+being satisfied. We want to find probability of being worse off given
+that you are satisfied.
+
+|            | Satisfied     | Dissatisfied |     | Row Total |
+|------------|---------------|--------------|-----|-----------|
+| Better off |               |              |     | 0.2       |
+| cell       | 0.6\*0.2=0.12 |              |     |           |
+| row        | 0.6           | 0.4          |     |           |
+| col        |               |              |     |           |
+| worse off  |               |              |     | 0.3       |
+| cell       | 0.3\*0.3=0.9  |              |     |           |
+| row        | 0.3           | 0.7          |     |           |
+| col        |               |              |     |           |
+| same       |               |              |     | 0.5       |
+| cell       | 0.25          |              |     |           |
+| row        | 0.5           | 0.5          |     |           |
+| col        |               |              |     |           |
+|            |               |              |     |           |
+
+For better off, satisfied is 0.6.
+
+For worse off, dissatisfied is 0.7.
+
+For the same, satisfied is 0.5.
+
+Overall, 0.2 better off, 0.5 about the same, 0.3 worse off.
+
+For satistified , what is proportion of worse off ?
+
+From this, we find that 0.09 total proportion feel satisfied and worse
+off. We can find this from multiplying conditional rows by total rows.
+We find the total of those who feel satisfied by doing the same for
+better off and same. We then divide 0.09 by 0.09+0.25+0.12, giving
+0.1957
+
+> apply Bayes rules to answer research questions
+
+See questions from previous exams
+
+> apply cross table framework to the special case of binary outcomes
+> with special attention to Sensitivity, Specificity, Positive
+> predictive value, Negative predictive value, Prevalence, Incidence
+
+|   | C | NC |   | Row Total |
+|---------------|---------------|---------------|---------------|---------------|
+| \+ |  |  |  | tp(p) + (1-p)(1-tn) |
+| cell | tp(p) | (1-p)(1-tn) |  |  |
+| row | tp(p)/[(1-p)(1-tn) + tp(p)] | (1-p)(1-tn)/[(1-p)(1-tn) + tp(p)] |  |  |
+| col | tp | 1-tn |  |  |
+| \- |  |  |  | p(1-tp) + (1-p)(tn) |
+| cell | p(1-tp) | (1-p)(tn) |  |  |
+| row | p(1-tp)/[p(1-tp) + (1-p)(tn)] | (1-p)(tn)/[p(1-tp) + (1-p)(tn)] |  |  |
+| col | 1-tp | tn |  |  |
+| Total | p | 1-p |  | 1 |
+
+Sensitivity: Found in the first row under the “C” (Condition Present)
+column
+
+Specificity: Found in the second row under the “NC” (Condition Absent)
+column.
+
+Positive Predictive Value (PPV): Found in the first row under the “C”
+column.
+
+Negative Predictive Value (NPV): Found in the second row under the “NC”
+column
+
+```{r}
+d1 <- readRDS(url("https://tgstewart.cloud/spam-data.RDS"))
+library(gmodels)
+CrossTable(d1$Type, d1$Folder, prop.chisq = FALSE)
+```
+
+TP: Spam in Junk
+
+TN: Not spam in inbox FP: Spam in inbox
+
+FN: Not spam in junk
+
+Sensitivity: The probability that a test will correctly identify a
+positive case.
+
+Sensitivity = TP/(TP+FN) From the example, equal to 0.901.
+1792(Spam\|Junk)/1989(Spam)
+
+Specificity: The probability that a test will correctly identify a
+negative case.
+
+Specificity = TN/(TN+FP) From the example, equal to 0.947 P(Not
+Spam\|Inbox)/P(Not Spam) = 0.947
+
+Positive predictive value: The probability that a positive test result
+is correct. PPV = TP/(TP+FP)
+
+From the example, equal to 0.947. 1792(Spam\|Junk)/1893(Spam\|Junk +
+Spam\|Inbox)
+
+From example, conditional column probability of (Spam\|Junk)
+(1792/10000)/(2214/10000) = 0.809
+
+Negative predictive value: The probability that a negative test result
+is correct. NPV = TN/(TN+FN)
+
+From example, conditional column probability of (Not Spam\|Inbox)
+(7589/10000)/(7786/10000) = 0.975
+
+Prevalence: The proportion of the population that has the disease.
+
+Prevalence = (TP+FN)/(TP+FP+TN+FN) From the example, equal to the total
+of spam over the entire population, 1989/10000 = 0.1989
+
+Incidence: The rate at which new cases of a disease occur in a
+population.
+
+Incidence = (TP+FP)/(TP+FP+TN+FN) (1792+422)/(10000)= 0.2214
+
+> define/describe confounding variables, including Simpson's paradox,
+> DAGs, causal pathway
+
+Confounding variables: A variable influences both the independent and dependent variables, potentially misleading conclusions about cause and effect. For example, age is a confounding variable in the relationship between height and weight. Age influences both height and weight, so the relationship between height and weight may be confounded by age.
+
+Simpson’s paradox: Aggregate data may show a different trend than stratified data. By breaking down the data into subgroups, the relationship between variables may change. For example, a treatment may appear to be effective when looking at the aggregate data, but when broken down by gender proves to be ineffective for women.
+
+DAGs: Directed Acyclic Graphs are used to represent causal relationships between variables. The graph shows the direction of the relationship between variables and the absence of cycles ensures that the model is acyclic.
+
+Causal pathway: A series of events that lead to a particular outcome. For example, smoking leads to lung cancer. Smoking is the causal pathway to lung cancer. When a variable lies on the causal pathway, stratification is
+not applicable.
+
+
+> describe approaches for avoiding or addressing confounding, including
+> stratification and randomization
+
+Stratification: Breaking down data into subgroups in order to reduce the possibility of outside variables having an effect on our observations. Want to examine pooled data when we believe relationship between data is consistent across subgroups or there are no confounding variables, stratify if not. For example, if observing the effectiveness of a drug we would stratify by age group if we believe there may be age related difference. This works as it allows us to analyze homogeneous groups instead of total populations.
+
+Randomization: Randomization can be used to address/avoid confounding by ensuring that the treatment and control groups are similar in all aspects except for the treatment. This reduces the possibility of confounding variables influencing the results as without randomization, groups may be influenced by bias of selectors or other outside factors. For example, in a clinical trial, randomization ensures that the treatment group and control group are similar in all aspects except for the treatment.
+
+
+
+
+> list various data types (nominal, ordinal, interval, ratio, discrete,
+> continuous)
+
+
+
+# Data Types and Visualizations
+
+## Nominal
+Categorical data that has no order. For example, a survey question that asks respondents to select their favorite color.
+
+- **Visualizations**: Probability Mass Function (PMF), Bar Plot, Frequency Table
+
+## Ordinal
+Categorical data that has an order. For example, a survey question that asks respondents to rate their satisfaction on a scale of 1-5.
+
+- **Visualizations**: Bar Plot, Cumulative Distribution Function (CDF), Empirical Cumulative Distribution Function (ECDF)
+
+## Interval
+Continuous data where differences between values are meaningful but there is no true zero. An example would be temperature, where 0 degrees does not mean the absence of temperature.
+
+- **Visualizations**: Histogram, Probability Density Function (PDF), CDF
+
+## Ratio
+Continuous data where differences between values are meaningful and there is a true zero. An example would be weight, where 0 weight means the absence of weight.
+
+- **Visualizations**: Histogram, Box Plot, Scatter Plot, PDF, CDF
+
+## Discrete
+Data that can only take on specific values. For example, the number of students in a class.
+
+- **Visualizations**: PMF, Bar Plot, Frequency Table
+
+## Continuous
+Data that can take on any value within a range. For example, the height of students in a class.
+
+- **Visualizations**: Histogram, Box Plot, Scatter Plot, PDF, CDF
+
+> match each data type with probability models that may describe it
+
+> discuss the degree to which models describe the underlying data
+
+> tease apart model fit and model utility
+
+# Model Fit vs. Model Utility
+
+## Model Fit
+How well does our model align with our data? Does it overfit or underfit? 
+
+- **Definition**: Model fit is the degree to which the model accurately represents the data.
+- **Characteristics**:
+  - A well-fitting model will accurately predict the data.
+  - A poorly fitting model will not accurately predict the data.
+
+## Model Utility
+How useful is our model? Does it help us answer questions and make predictions?
+
+- **Key Considerations**:
+  - Is the model valid?
+  - Does it represent a large enough sample size to minimize error?
+  - How applicable is it to the population of interest?
+
+## Key Difference
+- **Model Fit**: Focuses on how well the model represents the data.
+- **Model Utility**: Focuses on how useful the model is for answering questions and making predictions.
+
+> express probability models both mathematically, computationally, and
+> graphically (PMF/PDF CMF/CDF, quantile function, histogram/eCDF)
+
+
+
+
+
+# Probability Models
+
+**Q.** Suppose the yearly hospital charges (in thousands of dollars) for
+a randomly selected UVA student is a mixture distribution.
+
+For 60% of students, the hospital charges will be \$0. For the remaining
+40% of students, the hospital charges are a random variable described by
+a gamma distribution with shape = 2 and scale = 2. (Again, in thousands
+of dollars.)
+
+The following function mimics the hospital charge distribution. It
+generates draws of the random variable. Use the function to generate an
+expression for the CDF and quantile functions of the random variable.
+
+```{r}
+rhc <- function(n){rgamma(n,shape=2,scale=2)*rbinom(n,1,.4)}
+#generate sample of 10000 students
+set.seed(12124)
+sample <- rhc(10000)
+# Empirical CDF
+CDF <- ecdf(sample)
+plot(CDF, xlab = "Hospital Charges", ylab = "CDF", main = "Empirical CDF")
+```
+
+
+> employ probability models (computationally and analytically) to answer
+> research questions
+
+**Q.** Consider earnings (in thousands of dollars) the first year after
+graduation from UVA with an undergraduate degree. If X is normal with
+$\mu = 60$ and $\sigma = 10$, what level of earnings represents the top
+90th percentile?
+```{r}
+qnorm(0.9, mean = 60, sd = 10)
+```
+
+```{r}
+# Quantile Function (Empierical)
+pp = seq(0.01, 0.99, length = 200)
+xx = (quantile(sample, pp))
+plot(pp, xx, type = "l", xlab = "Percentile", ylab = "Quantile", main = "Empirical Quant
+ile Function")
+```
+
+Q: Why would you use cdf vs quantile function?
+
+A: The CDF is used to find the probability that a random variable is less than or equal to a certain value. The quantile function is used to find the value of a random variable for a given probability. The CDF is useful when you want to find the probability of a random variable being less than or equal to a certain value, while the quantile function is useful when you want to find the value of a random variable for a given probability. 
+
+To put in terms that anyone could understand, the CDF is like finding the probability of getting a certain grade on a test, while the quantile function is like finding the grade you need to get a certain probability of passing the test.
+
+Quantile function: The quantile function is the inverse of the CDF . It gives the value of the random variable for which the CDF is equal to a certain value. For example, the quantile function of a random variable X is the value x such that P(X ≤ x) = p. Use quantile to plot
+
+# CDF and Quantile Function
+
+## Cumulative Distribution Function (CDF)
+The cumulative distribution function is the probability that a random variable is less than or equal to a certain value.
+
+- **Definition**: For a random variable \(X\), the CDF is \(P(X \leq x)\).
+- **Visualization**: Use `ecdf` to plot.
+
+## Quantile Function
+The quantile function is the inverse of the CDF. It gives the value of the random variable for which the CDF is equal to a certain value.
+
+- **Definition**: For a random variable \(X\), the quantile function gives the value \(x\) such that \(P(X \leq x) = p\).
+- **Visualization**: Use `quantile` to plot.
+
+
+
+> explain and implement different approaches for fitting probability
+> models from data (Maximum likelihood, Bayesian posterior)
+
+**Q.** Suppose an upcoming election for UVA student body president is
+between two candidates. In a survey of 30 students, 20 voiced support
+for candidate A. Use the Desmos [calculator
+(link)](https://www.desmos.com/calculator/7ig2sa0c5v) to fit a
+probability model with Bayesian methods for the election, specifically
+the probability that candidate A is the preferred by the student body.
+Report the 95% credible interval. (In this calculator, $H_1$ is the
+number of supporters for candidate A and $T_1$ is the number of
+supporters for candidate B.)
+
+A: The 95% credible interval in this case would be (0.49, 0.81). This means that we are 95% confident that the true probability of candidate A winning the election is between 0.49 and 0.81 based on the sample data. This is found by plugging in the values of the survey into the calculator and manipulating the sliders to find the 95%
+credible interval.
+
+
+**Q.** Suppose an upcoming election for UVA student body president is
+between two candidates. In a survey of 30 students, 20 voiced support
+for candidate A. Use the Desmos [calculator
+(link)](https://www.desmos.com/calculator/ga7paxcopm) to fit a
+probability model with Maximum Likelihood for the election, specifically
+the probability that candidate A is the prefered by the student body.
+Report the 1/20 support interval. (In this calculator, $n$ is the total
+number of respondants, $h$ is the number that voice support for
+candidate A.)
+
+A: The 1/20th support interval based on the sample data from the survey is (0.44461, 0.8469). This is found by changing n to be 30, h to be 20, and manipulating the sliders so SI = 0.05. The 1/20th support interval communicates a 0.05 level of uncertainty.
+
+> explore how to communicate uncertainty when constructing models and
+> answering research questions (support intervals, credible intervals)
+
+**Q.** Repeat the election analysis performed above with additional
+data. In a survey of 100 students, 60 students voiced support for
+candidate A. Compare the interval estimates based on the larger dataset
+to those generated from the smaller dataset. Comment on which analysis
+you find more persuasive and explain why.
+
+A: The 95% credible interval for the first model becomes (0.5, 0.69). The 1/20th support interval for the second model becomes (0.478, 0.714). First of all, this shows that when we increase sample size we become more confident in our predictions. The interval of 0.19 for the first model is smaller than the interval of 0.24 for the second model. I find the first model more persuasive as it gives more of an exact range of the probability of
+candidate A winning the election. The second model has a wider range of probabilities which makes it less persuasive.
+
+> propagate uncertainty in simulations, visualize the uncertainty
+> inherent in fitting probability models from data
+
+**Q.** Going back to the election question, suppose that the support for
+candidate A was known to be $p=0.55$. In an election in which 100
+students vote, what is the probability that 51 or more votes will be
+cast for candidate A?
+
+```{r}
+1-pbinom(50,100,0.55)
+```
+A: The probability that 51 or more votes will be cast for candidate A is 0.817. This is found by using the binomial distribution with n=100, p=0.55, and calculating 1 minus the probability of 50 or fewer votes.
+
+
+**Q.** Now suppose the the probability is unknown, and is estimated from
+data. The following shows the distribution for $P$(Votes\>50) when
+estimated from data using a uniform prior and a survey of 30 students
+with 20 voicing support for the candidate. Add a line to show the
+solution when $p$ is known. Comment on the uncertainty when $p$ is
+estimated from data.
+
+```{r}
+pis <- rbeta(10000, 21, 11)
+hist(1-pbinom(50,100,pis), freq=FALSE, breaks=100)
+abline(v=1-pbinom(50,100,0.55), col="red")
+```
+
+
+
+The model is heavily clustered around values of 1, showing that there is a high probability that candidate A will receive 51 or more votes. The line for when p is known is much more certain and shows that there is a 0.817 probability that candidate A will receive 51 or more votes. The model is much more uncertain when p is estimated from data as it has more spread than when we are certain of probability of winning. > explore the trade-offs of
+model complexity and generalization.
+
+> explore the trade-offs of model complexity and generalizability
+
+**Q.** Consider the following estimates of the PDF for infant
+birthweight. Both are poorly fitting estimates. Explain the concepts of
+overfitting and underfitting in the context of the birthweight data.
+
+```{r}
+d1 <- MASS::birthwt
+hist(d1$bwt, breaks=20, freq=FALSE, xlim = c(0,6000), ylim = c(0,0.0007), main = "Birthweight (grams)", xlab = "")
+lines(density(d1$bwt, adjust = 1/5), lwd = 3, col = "navy")
+lines(density(d1$bwt, adjust=5), lwd = 3, col = "red") 
+```
+
+
+
+Overfitting: Overfitting occurs when a model is too complex and fits the training data too closely. This can lead to poor generalization to new data. In the context of the birthweight data, the red line represents an overfit model. It is too complex and fits the data too closely, resulting in a poor fit to the data.
+
+Underfitting: Underfitting occurs when a model is too simple and does not fit the training data well. This can also lead to poor generalization to new data. In the context of the birthweight data, the navy line represents an underfit model. It is too simple and does not fit the data well, resulting in a poor fit to the data.
+
+
+
+**Q.** Explain the concept of generalizability in the context of the
+birthweight data.
+
+Generalizability: 
+
+- a model that would predict the birth weight  future infants accuratley based on the data we have.
+
+- it requires that the model is not overfit to the training data, so that it can make accurate predictions on new data 
+
+- for the model to be truly generalizable, training data must be representative of the population. if the traning data is biased, only reflects a specific subgroup(ex: only infants born in a certain hospital), the model will not be generalizable to the entire population.
+
+- important not to overfit or underfit
+
+> select prior distributions which reflect personal belief (informative
+> vs weakly informative priors)
+
+
+
+> implement bayesian updating
+
+
+
+> use probability models to build simulations of complex real world
+> processes to answer research questions
+
+Q: The Monte Hall problem is a classic game show. Contestants on the show where shown three doors. Behind
+one randomly selected door was a sportscar; behind the other doors were goats.
+At the start of the game, contestants would select a door, say door A. Then, the host would open either door B or C to reveal a goat. At that point in the game, the host would ask the contestant if she would like to change her
+door selection. Once a contestant decided to stay or change, the host would open the chosen door to reveal the
+game prize, either a goat or a car.
+In this problem, consider a modified version of the Monte Hall problem in which the number of doors is variable.
+Rather than 3 doors, consider a game with 4 or 5 or 50 doors. In the modified version of the game, a contestant
+would select an initial door, say door A. Then, the host would open one of the remaining doors to reveal a goat. At
+that point in the game, the host would ask the contestant if she would like to change her door selection. Once a
+contestant decided to stay or change, the host would open the chosen door to reveal the game prize, either a
+goat or a car.
+Consider two strategies:
+1. Always stay with the first door selected.
+2. Always switch to the unopened door.
+
+**A.** The function `game` below plays a single game of Monte Hall. The
+function returns a vector of length two, the first element is the prize
+under strategy 1 and the second element is the prize under strategy 2.
+The function has a single input parameter, N, which is the number of
+doors in the game.
+
+Use the `game` function to estimate the probability that both strategies
+*simultaneously* result in a goat. Let **N=4**. (Note the word
+*simultaneously*. This means that in the same game, both strategies
+resulted in a goat.)
+
+```{r}
+require(magrittr)
+require(dplyr)
+
+game <- function(N){
+  if(N<3) stop("Must have at least 3 doors")
+  prize <- sample(c(rep("goat",N-1),"car"), N)
+  guess <- sample(1:N,1)
+  game <- data.frame(door = 1:N, prize = prize, stringsAsFactors = FALSE) %>% 
+    mutate(first_guess = case_when(
+      door == guess ~ 1
+      , TRUE ~ 0
+    )) %>% 
+    mutate(potential_reveal = case_when(
+        first_guess == 1 ~ 0
+      , prize == "car" ~ 0
+      , TRUE ~ 1
+    )) %>% 
+    mutate(reveal = 1*(rank(potential_reveal, ties.method = "random") == 3)) %>% 
+    mutate(potential_switch = case_when(
+      first_guess == 1 ~ 0
+      , reveal == 1 ~ 0
+      , TRUE ~ 1
+    )) %>% 
+    mutate(switch = 1*(rank(potential_switch, ties.method = "random") == 3))
+  c(game$prize[game$first_guess == 1], game$prize[game$switch == 1])
+}
+
+game(4)
+
+
+
+
+```
+
+```{r}
+
+set.seed(1234567)
+simulations <- replicate(10000, game(4))
+count = 0
+
+for(i in 1:10000){
+  if(simulations[1,i] == "goat" & simulations[2,i] == "goat"){
+    count = count + 1
+  }
+}
+
+
+prob = count/10000
+prob
+
+```
+
+```{r}
+# Tabular solution
+
+set.seed(1234567)
+simulations <- replicate(10000, game(4))
+
+results = data.frame(
+  Stay = simulations[1,],
+  Switch = simulations[2,]
+)
+cross_table <- table(results$Stay, results$Switch)
+
+cross_table
+
+both_goat = cross_table["goat", "goat"]
+total = sum(cross_table)
+prob = both_goat/total
+prob
+
+
+
+```
+
